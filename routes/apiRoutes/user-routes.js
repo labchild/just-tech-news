@@ -58,6 +58,30 @@ router.post('/', (req, res) => {
         });
 });
 
+router.post('/login', (req, res) =>{
+    User.findOne({
+        where: {
+            email: req.body.email
+        }
+    }).then(dbUserData => {
+        if (!dbUserData) {
+            res.status(400).json({ message: 'No user with email address' });
+            return;
+        }
+        // res.json({ user: dbUserData });
+
+        // verify user - does pass match?
+        const validPassword = dbUserData.checkPassword(req.body.password);
+
+        if (!validPassword) {
+            res.status(400).json({ message: 'Incorrect password!' });
+            return;
+        }
+
+        res.json({ user: dbUserData, message: 'You are now logged in!' });
+    });
+});
+
 // put/update user by id
 router.put('/:id', (req, res) => {
     // if req.body has vals to match model
