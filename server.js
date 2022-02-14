@@ -18,9 +18,10 @@ app.use(routes);
 // get static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-console.log(__dirname);
+
 // turn on connection to db
 sequelize.sync({ force: false })
     .then(() => {
+        console.log(path.join(__dirname, 'public'));
         app.listen(PORT, () => console.log(`Now listening on ${PORT}`));
     });
