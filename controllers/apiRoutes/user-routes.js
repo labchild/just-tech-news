@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { User, Post, Vote, Comment } = require('../../models');
+const withAuth = require('../../utils/auth');
 
 // get all users
 router.get('/', (req, res) => {
@@ -124,7 +125,7 @@ router.post('/logout', (req,res) => {
 })
 
 // put/update user by id
-router.put('/:id', (req, res) => {
+router.put('/:id', withAuth, (req, res) => {
     // if req.body has vals to match model
     User.update(req.body, {
         where: {
@@ -146,7 +147,7 @@ router.put('/:id', (req, res) => {
 });
 
 // delete user by id
-router.delete('/:id', (req, res) => {
+router.delete('/:id', withAuth, (req, res) => {
     User.destroy({
         where: {
             id: req.params.id
