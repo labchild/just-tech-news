@@ -4,11 +4,6 @@ const { Post, User, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
 router.get('/', withAuth, (req, res) => {
-    console.log(`
-    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    ${req.session.user_id}
-    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    `)
     Post.findAll({
         where: {
             user_id: req.session.user_id
@@ -73,9 +68,7 @@ router.get('/edit/:id', withAuth, (req, res) => {
         ]
     })
     .then(dbPostData => {
-        console.log(dbPostData);
         const post = dbPostData.get({ plain: true });
-        console.log(post);
         return res.render('edit-post', { 
             post,
             loggedIn: true
